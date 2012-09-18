@@ -1,7 +1,9 @@
 package edu.nkuresearch.securitychecker.fragments;
 
+import java.util.LinkedList;
 import java.util.List;
 
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.DataSetObserver;
@@ -26,15 +28,22 @@ public class AppPermissionFrag extends SherlockFragment implements OnItemClickLi
 	private List<PackageInfo> appinstall;
 	private LayoutInflater mInflater;
 	private ListView mListView;
+	PackageManager mPackMan;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		mInflater = inflater;
 		View v = inflater.inflate(R.layout.app_list, container, false);
-		PackageManager p = getSherlockActivity().getPackageManager(); 
-        appinstall = p.getInstalledPackages(PackageManager.GET_PERMISSIONS | PackageManager.GET_PROVIDERS);
-        
+		appinstall = new LinkedList<PackageInfo>();
+		mPackMan = getSherlockActivity().getPackageManager(); 
+        List<PackageInfo> tempList = mPackMan.getInstalledPackages(PackageManager.GET_PERMISSIONS | PackageManager.GET_PROVIDERS);
+        for( PackageInfo a : tempList) {
+            if( ((String) a.applicationInfo.loadLabel( getActivity().getPackageManager())).matches( "^[^\\.]+$" ) ) {
+                appinstall.add(a);
+            }
+        }
+        	
         mListView = (ListView) v.findViewById(R.id.applist);
         mListView.setAdapter(new AppListAdapter());
 		return v;
@@ -70,8 +79,9 @@ public class AppPermissionFrag extends SherlockFragment implements OnItemClickLi
 			
 			if( convertView == null)
 				convertView = mInflater.inflate(R.layout.applistitem, null, false);
-			((ImageView)convertView.findViewById(R.id.icon)).setImageResource(R.drawable.ic_launcher);
-			((TextView)convertView.findViewById(R.id.appName)).setText(appinstall.get(position).packageName);
+			ApplicationInfo ai = appinstall.get(position).applicationInfo;
+			((ImageView)convertView.findViewById(R.id.icon)).setImageDrawable(ai.loadIcon(mPackMan));
+			((TextView)convertView.findViewById(R.id.appName)).setText(ai.loadLabel(mPackMan));
 			return convertView;
 
 		}
