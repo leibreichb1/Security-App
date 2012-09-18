@@ -3,6 +3,7 @@ package edu.nkuresearch.securitychecker.fragments;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -21,14 +22,17 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
+import edu.nkuresearch.securitychecker.HomeActivity;
+import edu.nkuresearch.securitychecker.PermActivity;
 import edu.nkuresearch.securitychecker.R;
 
-public class AppPermissionFrag extends SherlockFragment implements OnItemClickListener{
+public class AppListFrag extends SherlockFragment implements OnItemClickListener{
 	
 	private List<PackageInfo> appinstall;
 	private LayoutInflater mInflater;
 	private ListView mListView;
 	PackageManager mPackMan;
+	public static final String PACK_INFO = "PACK_INFO";
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,6 +50,7 @@ public class AppPermissionFrag extends SherlockFragment implements OnItemClickLi
         	
         mListView = (ListView) v.findViewById(R.id.applist);
         mListView.setAdapter(new AppListAdapter());
+        mListView.setOnItemClickListener(this);
 		return v;
 	}
 
@@ -133,7 +138,9 @@ public class AppPermissionFrag extends SherlockFragment implements OnItemClickLi
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 		// TODO Auto-generated method stub
 		Log.v("APP NAME: ", ""+appinstall.get(position).packageName);
-		
+		Intent intent = new Intent(getSherlockActivity(), PermActivity.class);
+		intent.putExtra(PACK_INFO, appinstall.get(position));
+		startActivity(intent);
 	}
 	
 }
