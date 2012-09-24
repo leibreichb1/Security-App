@@ -5,7 +5,7 @@ import android.os.Bundle;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
 
-import edu.nkuresearch.securitychecker.fragments.AppPermissionFrag;
+import edu.nkuresearch.securitychecker.fragments.AppListFrag;
 import edu.nkuresearch.securitychecker.fragments.InstallObserverFrag;
 import edu.nkuresearch.securitychecker.fragments.InstallReviewFrag;
 
@@ -19,7 +19,7 @@ public class HomeActivity extends BaseActivity{
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setTitle("Chooser");
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		Tab tab = actionBar.newTab().setText("Permissions").setTabListener(new HomeTabListener<AppPermissionFrag>(this, "Observer", AppPermissionFrag.class));
+		Tab tab = actionBar.newTab().setText("Permissions").setTabListener(new HomeTabListener<AppListFrag>(this, "Observer", AppListFrag.class));
 		actionBar.addTab(tab);
 		tab = actionBar.newTab().setText("Observer").setTabListener(new HomeTabListener<InstallObserverFrag>(this, "Observer", InstallObserverFrag.class));
 		actionBar.addTab(tab);
