@@ -26,6 +26,4 @@ public class HomeActivity extends BaseActivity{
 		tab = actionBar.newTab().setText("Result").setTabListener(new HomeTabListener<InstallReviewFrag>(this, "Result", InstallReviewFrag.class));
 		actionBar.addTab(tab);
 	}
-	
-	
 }

@@ -1,11 +1,8 @@
 package edu.nkuresearch.securitychecker;
 
 import android.os.Bundle;
-
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuItem;
 
 public class BaseActivity extends SherlockFragmentActivity {
 
