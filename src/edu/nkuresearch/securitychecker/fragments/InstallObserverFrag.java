@@ -16,7 +16,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -63,11 +65,38 @@ public class InstallObserverFrag extends SherlockFragment{
         file = new File( mActivity.getFilesDir(), "strace.sh" );
         readFile = new File( mActivity.getFilesDir(), "strace.txt" );
         
+        Button startBtn = (Button)rootView.findViewById(R.id.button1);
+        startBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				onStartBtn();	
+			}
+		});
+        
+        Button stopBtn = (Button)rootView.findViewById(R.id.button2);
+        stopBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				onCancelStrace();
+			}
+		});
+        
+        Button managerBtn = (Button)rootView.findViewById(R.id.button3);
+        managerBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				loadManager();	
+			}
+		});
+        
 		return rootView;
 	}
     
     //Method for when the start button was clicked
-    public void onStartBtn( View v ){
+    public void onStartBtn(){
     	
     	//delete the stracefile if it exists
     	readFile.delete();
@@ -155,7 +184,7 @@ public class InstallObserverFrag extends SherlockFragment{
     }
     
     //method for when canceling strace
-    public void onCancelStrace( View v ){
+    public void onCancelStrace(){
 		
     	//get create the variables
     	String pid = "";
@@ -221,7 +250,7 @@ public class InstallObserverFrag extends SherlockFragment{
 		tv.setText( "" + deleted );
    }
     
-    public void loadManager( View v ){
+    public void loadManager(){
     	Intent startManager = new Intent( android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS );
     	startActivity( startManager );
     }

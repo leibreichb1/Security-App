@@ -7,19 +7,16 @@
         android:id="@+id/button1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="onStartBtn"
         android:text="Start Reviewer" />
     <Button
         android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="onCancelStrace"
         android:text="Stop Reviewer" />
     <Button
         android:id="@+id/button3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="loadManager"
         android:text="Go to App Manager" />
 	<ScrollView 
 	    android:layout_width="fill_parent"
