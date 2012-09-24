@@ -19,11 +19,14 @@ public class HomeActivity extends BaseActivity{
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setTitle("Chooser");
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		Tab tab = actionBar.newTab().setText("Permissions").setTabListener(new HomeTabListener<AppListFrag>(this, "Observer", AppListFrag.class));
+		Tab tab = actionBar.newTab().setText("Apps").setTabListener(new HomeTabListener<AppListFrag>(this, "Observer", AppListFrag.class));
 		actionBar.addTab(tab);
 		tab = actionBar.newTab().setText("Observer").setTabListener(new HomeTabListener<InstallObserverFrag>(this, "Observer", InstallObserverFrag.class));
 		actionBar.addTab(tab);
 		tab = actionBar.newTab().setText("Result").setTabListener(new HomeTabListener<InstallReviewFrag>(this, "Result", InstallReviewFrag.class));
 		actionBar.addTab(tab);
+		
+		if(getIntent().getStringExtra("STRACE") != null)
+			actionBar.selectTab(tab);
 	}
 }
