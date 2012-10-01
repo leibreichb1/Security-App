@@ -24,6 +24,7 @@
         <activity
             android:name=".PermActivity"
             android:label="@string/title_activity_base" />
+        
     </application>
 
 </manifest>

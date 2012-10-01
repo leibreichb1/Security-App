@@ -22,7 +22,6 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-import edu.nkuresearch.securitychecker.HomeActivity;
 import edu.nkuresearch.securitychecker.PermActivity;
 import edu.nkuresearch.securitychecker.R;
 
