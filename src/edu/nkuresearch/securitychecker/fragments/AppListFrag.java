@@ -9,7 +9,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.DataSetObserver;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-import edu.nkuresearch.securitychecker.HomeActivity;
 import edu.nkuresearch.securitychecker.PermActivity;
 import edu.nkuresearch.securitychecker.R;
 
@@ -57,25 +55,21 @@ public class AppListFrag extends SherlockFragment implements OnItemClickListener
 	private class AppListAdapter implements ListAdapter{
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
 			return appinstall.size();
 		}
 
 		@Override
 		public Object getItem(int position) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public long getItemId(int position) {
-			// TODO Auto-generated method stub
 			return position;
 		}
 
 		@Override
 		public int getItemViewType(int position) {
-			// TODO Auto-generated method stub
 			return 1;
 		}
 
@@ -93,51 +87,42 @@ public class AppListFrag extends SherlockFragment implements OnItemClickListener
 
 		@Override
 		public int getViewTypeCount() {
-			// TODO Auto-generated method stub
 			return 1;
 		}
 
 		@Override
 		public boolean hasStableIds() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		@Override
 		public boolean isEmpty() {
-			// TODO Auto-generated method stub
 			return appinstall.isEmpty();
 		}
 
 		@Override
 		public void registerDataSetObserver(DataSetObserver observer) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public void unregisterDataSetObserver(DataSetObserver observer) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public boolean areAllItemsEnabled() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		@Override
 		public boolean isEnabled(int position) {
-			// TODO Auto-generated method stub
 			return true;
 		}
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-		// TODO Auto-generated method stub
-		Log.v("APP NAME: ", ""+appinstall.get(position).packageName);
 		Intent intent = new Intent(getSherlockActivity(), PermActivity.class);
 		intent.putExtra(PACK_INFO, appinstall.get(position));
 		startActivity(intent);

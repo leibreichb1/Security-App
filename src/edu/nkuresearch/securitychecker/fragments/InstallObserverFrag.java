@@ -15,7 +15,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -56,7 +55,6 @@ public class InstallObserverFrag extends SherlockFragment{
 				straceFile.setExecutable(true);
 				is.close();
 				out.close();
-				Log.d("WROTE", "WROTE");
         	}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

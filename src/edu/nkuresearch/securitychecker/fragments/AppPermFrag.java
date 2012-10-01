@@ -2,7 +2,6 @@ package edu.nkuresearch.securitychecker.fragments;
 
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,8 +117,6 @@ public class AppPermFrag extends SherlockFragment implements OnItemClickListener
 	
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
-		// TODO Auto-generated method stub
-		Log.d("Permission Clicked", mPerms[position]);
 	}
 
 }
