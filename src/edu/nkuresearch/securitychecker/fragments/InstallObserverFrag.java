@@ -1,5 +1,6 @@
 package edu.nkuresearch.securitychecker.fragments;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -7,13 +8,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -54,7 +55,6 @@ public class InstallObserverFrag extends SherlockFragment{
 				straceFile.setExecutable(true);
 				is.close();
 				out.close();
-				Log.d("WROTE", "WROTE");
         	}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -196,7 +196,7 @@ public class InstallObserverFrag extends SherlockFragment{
 			kill = Runtime.getRuntime().exec( "ps" );
 			
 			//get the stream for reading
-			DataInputStream dIn = new DataInputStream( kill.getInputStream() );
+			BufferedReader dIn = new BufferedReader(new InputStreamReader( kill.getInputStream()));
 			try {
 				
 				//wait for process to finish

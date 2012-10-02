@@ -38,9 +38,13 @@ public class InstallReview extends Service{
 			pw.write( log[0] );
 			pw.close();
 			
-			PrintWriter pw1 = new PrintWriter( new File( Environment.getExternalStorageDirectory(), words[1] + "Bad.txt" ));
-			pw1.write( log[1] );
+			PrintWriter pw1 = new PrintWriter( new File( Environment.getExternalStorageDirectory(), words[1] + ".txt" ));
+			pw1.write( log[0] );
 			pw1.close();
+			
+			PrintWriter pw2 = new PrintWriter( new File( Environment.getExternalStorageDirectory(), words[1] + "Bad.txt" ));
+			pw2.write( log[1] );
+			pw2.close();
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

@@ -24,7 +24,16 @@
         <activity
             android:name=".PermActivity"
             android:label="@string/title_activity_base" />
-        
+        <service 
+            android:enabled="true" 
+            android:name=".service.InstallReview" />
+        <receiver 
+            android:name=".service.InstallReceiver" >
+        	<intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
