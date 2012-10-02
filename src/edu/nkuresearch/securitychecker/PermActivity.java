@@ -25,19 +25,14 @@ public class PermActivity extends SherlockFragmentActivity {
 	public void onCreate(Bundle arg0) {
 		// TODO Auto-generated method stub
 		super.onCreate(arg0);
-		setContentView(R.layout.permissions_main);
-		
-		permTitle = (TextView) findViewById(R.id.permTitle);
-		permDesc = (TextView) findViewById(R.id.permDesc);
 		
 		if( getIntent().hasExtra("PACK_INFO")){
-			permTitle.setText(getIntent().getStringExtra("TITLE"));
 			PackageInfo packIn = (PackageInfo) getIntent().getParcelableExtra(AppListFrag.PACK_INFO);
 			getSupportActionBar().setTitle(packIn.applicationInfo.loadLabel(getPackageManager()));
 			
 			FragmentManager fm = getSupportFragmentManager();
 			Fragment listFrag = new AppPermFrag();
-			Fragment descFrag = new PermissionDescriptionFrag();
+			//Fragment descFrag = new PermissionDescriptionFrag();
 			FragmentTransaction ft = fm.beginTransaction();
 			ft.replace(android.R.id.content, listFrag).commit();
 		}
