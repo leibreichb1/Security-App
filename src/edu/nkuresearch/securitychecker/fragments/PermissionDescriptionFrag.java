@@ -8,40 +8,20 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
+import edu.nkuresearch.securitychecker.PermActivity;
 import edu.nkuresearch.securitychecker.R;
 
 public class PermissionDescriptionFrag extends SherlockFragment {
 	
-View vPermDesc;
-
- @Override
-public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	View vPermDesc;
+	
+	 @Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		Bundle savedInstanceState) {
 	
 	 	vPermDesc = inflater.inflate(R.layout.perm_description_frag, container, false);
-	 
+	 	TextView tv = (TextView) vPermDesc.findViewById(R.id.permDesc);
+	 	tv.setText(((PermActivity) getSherlockActivity()).getDesc());
 	 	return vPermDesc;
  	}
- 
- 
- 
- 
- 
-	
-//	View permList;
-//	TextView permTitle;
-//	TextView permDesc;
-//	@Override
-//	public void onCreate(Bundle arg0) {
-//		// TODO Auto-generated method stub
-//		super.onCreate(arg0);
-//		setContentView(R.layout.permissions_main);
-//		
-//		permTitle = (TextView) findViewById(R.id.permTitle);
-//		permDesc = (TextView) findViewById(R.id.permDesc);
-//		
-//		if( getIntent().hasExtra("TITLE")){
-//			permTitle.setText(getIntent().getStringExtra("TITLE"));
-//		}
-//	}
 }

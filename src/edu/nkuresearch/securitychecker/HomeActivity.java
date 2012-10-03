@@ -28,7 +28,7 @@ public class HomeActivity extends BaseActivity{
 		actionBar.addTab(tab);
 		
 		Tab straceTab = actionBar.newTab().setText("Result").setTabListener(new HomeTabListener<InstallReviewFrag>(this, "Result", InstallReviewFrag.class));
-		actionBar.addTab(tab);
+		actionBar.addTab(straceTab);
 		
 		if(getIntent().getStringExtra("STRACE") != null)
 			actionBar.selectTab(straceTab);

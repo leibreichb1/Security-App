@@ -59,13 +59,11 @@ INTERNET:-:Allows applications to open network sockets.
 KILL_BACKGROUND_PROCESSES:-:Allows an application to call killBackgroundProcesses(String).
 MANAGE_ACCOUNTS:-:Allows an application to manage the list of accounts in the AccountManager
 MANAGE_APP_TOKENS:-:Allows an application to manage (create, destroy, Z-order) application tokens in the window manager. This is only for use by the system.
-MASTER_CLEAR:-:
 MODIFY_AUDIO_SETTINGS:-:Allows an application to modify global audio settings
 MODIFY_PHONE_STATE:-:Allows modification of the telephony state - power on, mmi, etc. Does not include placing calls.
 MOUNT_FORMAT_FILESYSTEMS:-:Allows formatting file systems for removable storage.
 MOUNT_UNMOUNT_FILESYSTEMS:-:Allows mounting and unmounting file systems for removable storage.
 NFC:-:Allows applications to perform I/O operations over NFC
-PERSISTENT_ACTIVITY:-:
 PROCESS_OUTGOING_CALLS:-:Allows an application to monitor, modify, or abort outgoing calls.
 READ_CALENDAR:-:Allows an application to read the user's calendar data.
 READ_CALL_LOG:-:Allows an application to read the user's call log.
@@ -89,7 +87,6 @@ RECEIVE_SMS:-:Allows an application to monitor incoming SMS messages, to record 
 RECEIVE_WAP_PUSH:-:Allows an application to monitor incoming WAP push messages.
 RECORD_AUDIO:-:Allows an application to record audio
 REORDER_TASKS:-:Allows an application to change the Z-order of tasks
-RESTART_PACKAGES:-:
 SEND_SMS:-:Allows an application to send SMS messages.
 SET_ACTIVITY_WATCHER:-:Allows an application to watch and control how activities are started globally in the system. Only for is in debugging (usually the monkey command).
 SET_ALARM:-:Allows an application to broadcast an Intent to set an alarm for the user.
@@ -98,7 +95,6 @@ SET_ANIMATION_SCALE:-:Modify the global animation scaling factor.
 SET_DEBUG_APP:-:Configure an application for debugging.
 SET_ORIENTATION:-:Allows low-level access to setting the orientation (actually rotation) of the screen. Not for use by normal applications.
 SET_POINTER_SPEED:-:Allows low-level access to setting the pointer speed. Not for use by normal applications.
-SET_PREFERRED_APPLICATIONS:-:
 SET_PROCESS_LIMIT:-:Allows an application to set the maximum number of (not needed) application processes that can be running.
 SET_TIME:-:Allows applications to set the system time
 SET_TIME_ZONE:-:Allows applications to set the system time zone
@@ -107,7 +103,6 @@ SET_WALLPAPER_HINTS:-:Allows applications to set the wallpaper hints
 SIGNAL_PERSISTENT_PROCESSES:-:Allow an application to request that a signal be sent to all persistent processes
 STATUS_BAR:-:Allows an application to open, close, or disable the status bar and its icons.
 SUBSCRIBED_FEEDS_READ:-:Allows an application to allow access the subscribed feeds ContentProvider.
-SUBSCRIBED_FEEDS_WRITE:-:
 SYSTEM_ALERT_WINDOW:-:Allows an application to open windows using the type TYPE_SYSTEM_ALERT, shown on top of all other applications. Very few applications should use this permission; these windows are intended for system-level interaction with the user.
 UPDATE_DEVICE_STATS:-:Allows an application to update device statistics. Not for use by third party apps.
 USE_CREDENTIALS:-:Allows an application to request authtokens from the AccountManager
