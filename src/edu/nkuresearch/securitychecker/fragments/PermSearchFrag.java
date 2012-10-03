@@ -19,6 +19,6 @@ public class PermSearchFrag extends Fragment{
 	}
 	
 	private void readInPerms(){
-		getActivity().getAssets().open(fileName);
+		//getActivity().getAssets().open(fileName);
 	}
 }
