@@ -8,7 +8,6 @@ import com.actionbarsherlock.app.ActionBar.Tab;
 import edu.nkuresearch.securitychecker.fragments.AppListFrag;
 import edu.nkuresearch.securitychecker.fragments.InstallObserverFrag;
 import edu.nkuresearch.securitychecker.fragments.InstallReviewFrag;
-import edu.nkuresearch.securitychecker.fragments.PermSearchFrag;
 
 public class HomeActivity extends BaseActivity{
 
