@@ -59,6 +59,7 @@ public class PermActivity extends SherlockFragmentActivity {
 	public void startRightFrag(String title){
 		String[] splitStr = title.split("\\.");
 		if(splitStr.length > 0 && perms.containsKey(splitStr[splitStr.length - 1])){
+			desc = perms.get(splitStr[splitStr.length - 1]);
 			if(getResources().getBoolean(R.bool.IsTablet)){
 				FragmentManager fm = getSupportFragmentManager();
 				Fragment rightFrag = new PermissionDescriptionFrag();
