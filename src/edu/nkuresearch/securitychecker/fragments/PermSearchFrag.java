@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,24 +18,34 @@ import android.widget.CheckBox;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
 import edu.nkuresearch.securitychecker.R;
+import edu.nkuresearch.securitychecker.SearchResultActivity;
 
 public class PermSearchFrag extends SherlockFragment{
 
 	private LayoutInflater mInflater;
 	private ListView lv;
-	private List<String> list;
-	private List<String> selectedList;
+	private LinkedList<String> list;
+	private LinkedList<String> selectedList;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mInflater = inflater;
-		View v = inflater.inflate(R.layout.app_list, container, false);
-		lv = (ListView) v.findViewById(R.id.applist);
+		View v = inflater.inflate(R.layout.perm_list, container, false);
+		Button scanBtn = (Button) v.findViewById(R.id.headBtn);
+		scanBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getSherlockActivity(), SearchResultActivity.class);
+				intent.putExtra("LIST", selectedList);
+				startActivity(intent);
+			}
+		});
+		lv = (ListView) v.findViewById(R.id.permlist);
 		list = new LinkedList<String>();
 		selectedList = new LinkedList<String>();
 		readInPerms();
@@ -49,16 +60,6 @@ public class PermSearchFrag extends SherlockFragment{
 				String[] splitStr = line.split(":-:");
 				list.add(splitStr[0]);
 			}
-			View headView = mInflater.inflate(R.layout.list_header, null, false);
-			Button scanBtn = (Button) headView.findViewById(R.id.headBtn);
-			scanBtn.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					Toast.makeText(getSherlockActivity(), "IMPLEMENT SCAN", Toast.LENGTH_LONG).show();
-				}
-			});
-			lv.addHeaderView(headView);
 			lv.setAdapter(new PermListAdapter());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

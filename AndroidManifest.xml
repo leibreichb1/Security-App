@@ -24,6 +24,9 @@
         <activity
             android:name=".PermActivity"
             android:label="@string/title_activity_base" />
+        <activity
+            android:name=".SearchResultActivity"
+            android:label="@string/title_activity_base" />
         <service 
             android:enabled="true" 
             android:name=".service.InstallReview" />

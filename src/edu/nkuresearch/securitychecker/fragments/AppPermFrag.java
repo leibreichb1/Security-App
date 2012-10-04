@@ -28,8 +28,8 @@ public class AppPermFrag extends SherlockFragment implements OnItemClickListener
 		PackageInfo packIn = (PackageInfo) getSherlockActivity().getIntent().getParcelableExtra(AppListFrag.PACK_INFO);
 		mInflater = inflater;
 		mPerms = packIn.requestedPermissions;
-		View v = inflater.inflate(R.layout.perm_list, container, false);
-		mListView = (ListView) v.findViewById(R.id.permlist);
+		View v = inflater.inflate(R.layout.app_list, container, false);
+		mListView = (ListView) v.findViewById(R.id.applist);
 		mListView.setOnItemClickListener(this);
 		if(mPerms != null)
 			mListView.setAdapter(new ArrayAdapter<String>(getSherlockActivity(), android.R.layout.simple_list_item_1, mPerms));

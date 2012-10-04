@@ -3,15 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    <Button 
-        android:id="@+id/headBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/scan_apps"/>
-    
-    <ListView android:id="@+id/permlist"
+    <ListView android:id="@+id/searchList"
        android:layout_width="fill_parent"
        android:layout_height="wrap_content"/>
-    
-
 </LinearLayout>
