@@ -25,7 +25,6 @@ public class SearhResultFrag extends SherlockFragment{
 
 	private ListView lv;
 	private ArrayList<String> mPerms;
-	private LayoutInflater mInflater;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
