@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import android.content.pm.ApplicationInfo;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.DataSetObserver;
@@ -14,7 +14,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -22,10 +23,11 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
+import edu.nkuresearch.securitychecker.AppListActivity;
 import edu.nkuresearch.securitychecker.R;
 import edu.nkuresearch.securitychecker.SearchResultActivity;
 
-public class SearhResultFrag extends SherlockFragment{
+public class SearhResultFrag extends SherlockFragment implements OnItemClickListener{
 
 	private ListView lv;
 	private ArrayList<String> mPerms;
@@ -41,6 +43,7 @@ public class SearhResultFrag extends SherlockFragment{
 		lv = (ListView) v.findViewById(R.id.searchList);
 		loadMap();
 		lv.setAdapter(new permAdapter());
+		lv.setOnItemClickListener(this);
 		return v;
 	}
 	
@@ -139,5 +142,13 @@ public class SearhResultFrag extends SherlockFragment{
 		public boolean isEnabled(int position) {
 			return true;
 		}
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		LinkedList<PackageInfo> list = appMap.get(mPerms.get(position));
+		Intent intent = new Intent(getSherlockActivity(), AppListActivity.class);
+		intent.putExtra("APPS", list);
+		startActivity(intent);
 	}
 }

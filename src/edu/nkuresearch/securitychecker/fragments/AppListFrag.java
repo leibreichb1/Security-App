@@ -1,5 +1,6 @@
 package edu.nkuresearch.securitychecker.fragments;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,18 +38,23 @@ public class AppListFrag extends SherlockFragment implements OnItemClickListener
 			Bundle savedInstanceState) {
 		mInflater = inflater;
 		View v = inflater.inflate(R.layout.app_list, container, false);
-		appinstall = new LinkedList<PackageInfo>();
-		mPackMan = getSherlockActivity().getPackageManager(); 
-        List<PackageInfo> tempList = mPackMan.getInstalledPackages(PackageManager.GET_PERMISSIONS | PackageManager.GET_PROVIDERS);
-        for( PackageInfo a : tempList) {
-            if( ((String) a.applicationInfo.loadLabel( getActivity().getPackageManager())).matches( "^[^\\.]+$" ) ) {
-                appinstall.add(a);
-            }
-        }
-        	
-        mListView = (ListView) v.findViewById(R.id.applist);
+		ArrayList<PackageInfo> apps = getSherlockActivity().getIntent().getParcelableArrayListExtra("APPS");
+		mListView = (ListView) v.findViewById(R.id.applist);
+		mPackMan = getSherlockActivity().getPackageManager();
+		if(apps == null){
+			appinstall = new LinkedList<PackageInfo>(); 
+	        List<PackageInfo> tempList = mPackMan.getInstalledPackages(PackageManager.GET_PERMISSIONS | PackageManager.GET_PROVIDERS);
+	        for( PackageInfo a : tempList) {
+	            if( ((String) a.applicationInfo.loadLabel( getActivity().getPackageManager())).matches( "^[^\\.]+$" ) ) {
+	                appinstall.add(a);
+	            }
+	        }
+	        mListView.setOnItemClickListener(this);
+		}
+		else{
+			appinstall = apps;
+		}
         mListView.setAdapter(new AppListAdapter());
-        mListView.setOnItemClickListener(this);
 		return v;
 	}
 
@@ -79,8 +85,10 @@ public class AppListFrag extends SherlockFragment implements OnItemClickListener
 			if( convertView == null)
 				convertView = mInflater.inflate(R.layout.applistitem, null, false);
 			ApplicationInfo ai = appinstall.get(position).applicationInfo;
-			((ImageView)convertView.findViewById(R.id.icon)).setImageDrawable(ai.loadIcon(mPackMan));
-			((TextView)convertView.findViewById(R.id.appName)).setText(ai.loadLabel(mPackMan));
+			if(ai != null){
+				((ImageView)convertView.findViewById(R.id.icon)).setImageDrawable(ai.loadIcon(mPackMan));
+				((TextView)convertView.findViewById(R.id.appName)).setText(ai.loadLabel(mPackMan));
+			}
 			return convertView;
 
 		}
