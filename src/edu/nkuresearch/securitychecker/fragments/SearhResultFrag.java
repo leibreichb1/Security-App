@@ -2,10 +2,8 @@ package edu.nkuresearch.securitychecker.fragments;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.DataSetObserver;
@@ -23,7 +21,6 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-import edu.nkuresearch.securitychecker.AppListActivity;
 import edu.nkuresearch.securitychecker.R;
 import edu.nkuresearch.securitychecker.SearchResultActivity;
 
@@ -31,7 +28,7 @@ public class SearhResultFrag extends SherlockFragment implements OnItemClickList
 
 	private ListView lv;
 	private ArrayList<String> mPerms;
-	HashMap<String, LinkedList<PackageInfo>> appMap;
+	HashMap<String, ArrayList<PackageInfo>> appMap;
 	LayoutInflater mInflater;
 	
 	@Override
@@ -48,11 +45,11 @@ public class SearhResultFrag extends SherlockFragment implements OnItemClickList
 	}
 	
 	private void loadMap(){
-		appMap = new HashMap<String, LinkedList<PackageInfo>>();
+		appMap = new HashMap<String, ArrayList<PackageInfo>>();
 		PackageManager mPackMan = getSherlockActivity().getPackageManager(); 
         List<PackageInfo> tempList = mPackMan.getInstalledPackages(PackageManager.GET_PERMISSIONS | PackageManager.GET_PROVIDERS);
         for(String perm : mPerms){
-        	LinkedList<PackageInfo> foundApps = new LinkedList<PackageInfo>();
+        	ArrayList<PackageInfo> foundApps = new ArrayList<PackageInfo>();
 	        for(PackageInfo a : tempList) {
 	            if(((String) a.applicationInfo.loadLabel( getActivity().getPackageManager())).matches( "^[^\\.]+$" )) {
 	            	String[] appPerms = a.requestedPermissions;
@@ -100,7 +97,7 @@ public class SearhResultFrag extends SherlockFragment implements OnItemClickList
 			
 			if( convertView == null)
 				convertView = mInflater.inflate(R.layout.applistitem, null, false);
-			List<PackageInfo> foundApps = appMap.get(mPerms.get(position));
+			ArrayList<PackageInfo> foundApps = appMap.get(mPerms.get(position));
 			((ImageView)convertView.findViewById(R.id.icon)).setVisibility(View.GONE);
 			
 			((TextView)convertView.findViewById(R.id.appName)).setText(mPerms.get(position) + " (" + foundApps.size() + ")");
@@ -146,9 +143,8 @@ public class SearhResultFrag extends SherlockFragment implements OnItemClickList
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		LinkedList<PackageInfo> list = appMap.get(mPerms.get(position));
-		Intent intent = new Intent(getSherlockActivity(), AppListActivity.class);
-		intent.putExtra("APPS", list);
-		startActivity(intent);
+		ArrayList<PackageInfo> list = appMap.get(mPerms.get(position));
+		((SearchResultActivity) getSherlockActivity()).setApps(list);
+		((SearchResultActivity) getSherlockActivity()).startRightFrag();
 	}
 }

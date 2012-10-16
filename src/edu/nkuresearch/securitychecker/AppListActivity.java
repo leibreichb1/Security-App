@@ -10,7 +10,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import edu.nkuresearch.securitychecker.fragments.AppListFrag;
 
 public class AppListActivity extends SherlockFragmentActivity{
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

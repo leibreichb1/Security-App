@@ -1,9 +1,9 @@
 package edu.nkuresearch.securitychecker.fragments;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -22,8 +22,10 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
+import edu.nkuresearch.securitychecker.AppListActivity;
 import edu.nkuresearch.securitychecker.PermActivity;
 import edu.nkuresearch.securitychecker.R;
+import edu.nkuresearch.securitychecker.SearchResultActivity;
 
 public class AppListFrag extends SherlockFragment implements OnItemClickListener{
 	
@@ -38,10 +40,10 @@ public class AppListFrag extends SherlockFragment implements OnItemClickListener
 			Bundle savedInstanceState) {
 		mInflater = inflater;
 		View v = inflater.inflate(R.layout.app_list, container, false);
-		ArrayList<PackageInfo> apps = getSherlockActivity().getIntent().getParcelableArrayListExtra("APPS");
 		mListView = (ListView) v.findViewById(R.id.applist);
 		mPackMan = getSherlockActivity().getPackageManager();
-		if(apps == null){
+		Activity activ = getSherlockActivity();
+		if(!(activ instanceof SearchResultActivity) && !(activ instanceof AppListActivity)){
 			appinstall = new LinkedList<PackageInfo>(); 
 	        List<PackageInfo> tempList = mPackMan.getInstalledPackages(PackageManager.GET_PERMISSIONS | PackageManager.GET_PROVIDERS);
 	        for( PackageInfo a : tempList) {
@@ -52,7 +54,10 @@ public class AppListFrag extends SherlockFragment implements OnItemClickListener
 	        mListView.setOnItemClickListener(this);
 		}
 		else{
-			appinstall = apps;
+			if(activ instanceof SearchResultActivity)
+				appinstall = ((SearchResultActivity) activ).getApps();
+			else
+				appinstall = activ.getIntent().getParcelableArrayListExtra("APPS");
 		}
         mListView.setAdapter(new AppListAdapter());
 		return v;
