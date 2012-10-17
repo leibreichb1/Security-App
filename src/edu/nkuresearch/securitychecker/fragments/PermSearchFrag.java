@@ -4,10 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
-import java.util.List;
 
 import android.content.Intent;
 import android.database.DataSetObserver;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
+import edu.nkuresearch.securitychecker.HomeActivity;
 import edu.nkuresearch.securitychecker.R;
 import edu.nkuresearch.securitychecker.SearchResultActivity;
 
@@ -34,6 +35,7 @@ public class PermSearchFrag extends SherlockFragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mInflater = inflater;
+		((HomeActivity) getSherlockActivity()).startProgress();
 		View v = inflater.inflate(R.layout.perm_list, container, false);
 		Button scanBtn = (Button) v.findViewById(R.id.headBtn);
 		scanBtn.setOnClickListener(new OnClickListener() {
@@ -48,22 +50,36 @@ public class PermSearchFrag extends SherlockFragment{
 		lv = (ListView) v.findViewById(R.id.permlist);
 		list = new LinkedList<String>();
 		selectedList = new LinkedList<String>();
-		readInPerms();
+		new ListPerms().execute((Void) null);
 		return v;
 	}
 	
-	private void readInPerms(){
-		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(getSherlockActivity().getAssets().open("permissionsList.txt")));
-			String line;
-			while((line = br.readLine()) != null){
-				String[] splitStr = line.split(":-:");
-				list.add(splitStr[0]);
+	class ListPerms extends AsyncTask<Void, Void, Void>{
+
+		@Override
+		protected Void doInBackground(Void... params) { 
+			try {
+				if(getSherlockActivity() != null && getSherlockActivity().getAssets() != null){
+					BufferedReader br = new BufferedReader(new InputStreamReader(getSherlockActivity().getAssets().open("permissionsList.txt")));
+					String line;
+					while((line = br.readLine()) != null){
+						String[] splitStr = line.split(":-:");
+						list.add(splitStr[0]);
+					}
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
 			lv.setAdapter(new PermListAdapter());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if(getSherlockActivity() != null)
+				((HomeActivity) getSherlockActivity()).stopProgress();
+			super.onPostExecute(result);
 		}
 	}
 	

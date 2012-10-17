@@ -31,17 +31,17 @@ public class HomeTabListener<T extends Fragment> implements TabListener {
         if (mFragment == null) {
             // If not, instantiate and add it to the activity
             mFragment = Fragment.instantiate(mActivity, mClass.getName());
-            ft.add(android.R.id.content, mFragment, mTag);
+            ft.replace(android.R.id.content, mFragment, mTag);
         } else {
             // If it exists, simply attach it in order to show it
-            ft.attach(mFragment);
+            ft.replace(android.R.id.content, mFragment, mTag);
         }
     }
 
     public void onTabUnselected(Tab tab, FragmentTransaction ft) {
         if (mFragment != null) {
             // Detach the fragment, because another one is being attached
-            ft.detach(mFragment);
+            ft.remove(mFragment);
         }
     }
 

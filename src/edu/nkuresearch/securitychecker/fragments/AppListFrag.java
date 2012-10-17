@@ -9,6 +9,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.DataSetObserver;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragment;
 
 import edu.nkuresearch.securitychecker.AppListActivity;
+import edu.nkuresearch.securitychecker.HomeActivity;
 import edu.nkuresearch.securitychecker.PermActivity;
 import edu.nkuresearch.securitychecker.R;
 import edu.nkuresearch.securitychecker.SearchResultActivity;
@@ -44,29 +46,47 @@ public class AppListFrag extends SherlockFragment implements OnItemClickListener
 		mPackMan = getSherlockActivity().getPackageManager();
 		Activity activ = getSherlockActivity();
 		if(!(activ instanceof SearchResultActivity) && !(activ instanceof AppListActivity)){
-			appinstall = new LinkedList<PackageInfo>(); 
-	        List<PackageInfo> tempList = mPackMan.getInstalledPackages(PackageManager.GET_PERMISSIONS | PackageManager.GET_PROVIDERS);
-	        for( PackageInfo a : tempList) {
-	            if( ((String) a.applicationInfo.loadLabel( getActivity().getPackageManager())).matches( "^[^\\.]+$" ) ) {
-	                appinstall.add(a);
-	            }
-	        }
-	        mListView.setOnItemClickListener(this);
+			appinstall = new LinkedList<PackageInfo>();
+			((HomeActivity) getSherlockActivity()).startProgress();
+			new ListApps().execute((Void) null);
 		}
 		else{
 			if(activ instanceof SearchResultActivity)
 				appinstall = ((SearchResultActivity) activ).getApps();
 			else
 				appinstall = activ.getIntent().getParcelableArrayListExtra("APPS");
+			mListView.setAdapter(new AppListAdapter());
 		}
-        mListView.setAdapter(new AppListAdapter());
 		return v;
+	}
+	
+	class ListApps extends AsyncTask<Void, Void, Void>{
+
+		@Override
+		protected Void doInBackground(Void... params) { 
+	        List<PackageInfo> tempList = mPackMan.getInstalledPackages(PackageManager.GET_PERMISSIONS | PackageManager.GET_PROVIDERS);
+	        for( PackageInfo a : tempList) {
+	            if( getSherlockActivity() != null && ((String) a.applicationInfo.loadLabel( getSherlockActivity().getPackageManager())).matches( "^[^\\.]+$" ) ) {
+	                appinstall.add(a);
+	            }
+	        }
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+			mListView.setAdapter(new AppListAdapter());
+			mListView.setOnItemClickListener(AppListFrag.this);
+			if(getSherlockActivity() != null)
+				((HomeActivity) getSherlockActivity()).stopProgress();
+			super.onPostExecute(result);
+		}
 	}
 
 	private class AppListAdapter implements ListAdapter{
 		@Override
 		public int getCount() {
-			return appinstall.size();
+			return (appinstall == null) ? 0 : appinstall.size();
 		}
 
 		@Override

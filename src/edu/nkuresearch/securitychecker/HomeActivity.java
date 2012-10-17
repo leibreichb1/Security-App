@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
+import com.actionbarsherlock.view.Window;
 
 import edu.nkuresearch.securitychecker.fragments.AppListFrag;
 import edu.nkuresearch.securitychecker.fragments.InstallObserverFrag;
@@ -16,7 +17,7 @@ public class HomeActivity extends BaseActivity{
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setTitle("Chooser");
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -32,5 +33,28 @@ public class HomeActivity extends BaseActivity{
 		
 		if(getIntent().getStringExtra("STRACE") != null)
 			actionBar.selectTab(straceTab);
+	}
+	
+	public void startProgress() {
+		runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				setSupportProgressBarIndeterminate(true);
+				setSupportProgressBarIndeterminateVisibility(true);
+			}
+
+		});
+	}
+	
+	public void stopProgress() {
+		runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				setSupportProgressBarIndeterminateVisibility(false);
+			}
+
+		});
 	}
 }
