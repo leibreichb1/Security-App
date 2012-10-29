@@ -111,6 +111,10 @@ public class PermSearchFrag extends SherlockFragment{
 				convertView = mInflater.inflate(R.layout.check_item, null, false);
 			final TextView tv = (TextView)convertView.findViewById(R.id.checkText);
 			final CheckBox cb = (CheckBox) convertView.findViewById(R.id.checkBox);
+			if(selectedList.contains(list.get(position)))
+				cb.setChecked(true);
+			else
+				cb.setChecked(false);
 			tv.setOnClickListener(new OnClickListener() {
 				
 				@Override

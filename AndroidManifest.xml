@@ -14,7 +14,8 @@
         android:theme="@style/Theme.Sherlock" >
         <activity
             android:name=".HomeActivity"
-            android:label="@string/title_activity_base" >
+            android:label="@string/title_activity_base"
+            android:configChanges="orientation|screenSize|keyboard" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,16 +24,20 @@
         </activity>
         <activity
             android:name=".PermActivity"
-            android:label="@string/title_activity_base" />
+            android:label="@string/title_activity_base"
+            android:configChanges="orientation|screenSize|keyboard" />
         <activity
             android:name=".SearchResultActivity"
-            android:label="@string/title_activity_base" />
+            android:label="@string/title_activity_base"
+            android:configChanges="orientation|screenSize|keyboard" />
         <activity
             android:name=".AppListActivity"
-            android:label="App List" />
+            android:label="App List"
+            android:configChanges="orientation|screenSize|keyboard" />
         <service 
             android:enabled="true" 
-            android:name=".service.InstallReview" />
+            android:name=".service.InstallReview"
+            android:configChanges="orientation|screenSize|keyboard" />
         <receiver 
             android:name=".service.InstallReceiver" >
         	<intent-filter>
