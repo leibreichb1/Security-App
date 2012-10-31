@@ -5,9 +5,9 @@
     android:orientation="vertical" >
     
     <RelativeLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
             
         <ImageView android:layout_width="40dp"
             android:id="@+id/icon"
@@ -21,26 +21,25 @@
             android:layout_alignParentRight="true"
             android:paddingLeft="5dp"
             android:paddingTop="5dp"
-            android:textSize="50dp"
+            android:textSize="20dp"
             android:textStyle="bold"/>
         
-        <TextView
+        <edu.nkuresearch.securitychecker.fragments.MyTextView
             android:id="@+id/appName"
-            android:layout_width="wrap_content"
+            android:fadingEdge="horizontal"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/icon"
             android:layout_toLeftOf="@id/appPermCount"
             android:marqueeRepeatLimit="marquee_forever"
+            android:ellipsize="marquee"
             android:scrollHorizontally="true"
             android:paddingLeft="5dp"
             android:paddingTop="5dp"
             android:textSize="20dp"
             android:textStyle="bold" 
-            android:singleLine="true"/>
-        
-
-        
-            
+            android:singleLine="true" />
+                    
         </RelativeLayout>
     
 
