@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -65,6 +67,13 @@ public class PermActivity extends SherlockFragmentActivity {
 				Fragment rightFrag = new PermissionDescriptionFrag();
 				FragmentTransaction ft = fm.beginTransaction();
 				ft.replace(R.id.right_frag, rightFrag).commit();
+			}
+			else{
+				Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle(splitStr[splitStr.length -1]);
+				builder.setMessage(desc);
+				builder.setPositiveButton("OK", null);
+				builder.create().show();
 			}
 		}
 		else

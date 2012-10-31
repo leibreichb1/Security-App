@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListAdapter;
@@ -77,9 +79,20 @@ public class PermSearchFrag extends SherlockFragment{
 		@Override
 		protected void onPostExecute(Void result) {
 			lv.setAdapter(new PermListAdapter());
+			lv.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+					CheckBox cb = (CheckBox) view.findViewById(R.id.checkBox);
+					cb.toggle();
+					if(cb.isChecked())
+						selectedList.add(list.get(position));
+					else
+						selectedList.remove(list.get(position));
+				}
+			});
 			if(getSherlockActivity() != null)
 				((HomeActivity) getSherlockActivity()).stopProgress();
-			super.onPostExecute(result);
 		}
 	}
 	
@@ -115,17 +128,23 @@ public class PermSearchFrag extends SherlockFragment{
 				cb.setChecked(true);
 			else
 				cb.setChecked(false);
-			tv.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					cb.toggle();
-					if(cb.isChecked())
-						selectedList.add(list.get(position));
-					else
-						selectedList.remove(tv.getText().toString());
-				}
-			});
+//			tv.setOnClickListener(new OnClickListener() {
+//				
+//				@Override
+//				public void onClick(View v) {
+//					cb.toggle();
+//				}
+//			});
+//			cb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+//				
+//				@Override
+//				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//					if(isChecked)
+//						selectedList.add(list.get(position));
+//					else
+//						selectedList.remove(tv.getText().toString());
+//				}
+//			});
 			tv.setText(list.get(position));
 			return convertView;
 
@@ -166,4 +185,5 @@ public class PermSearchFrag extends SherlockFragment{
 			return true;
 		}
 	}
+	
 }
