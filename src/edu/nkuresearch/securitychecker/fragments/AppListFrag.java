@@ -110,9 +110,12 @@ public class AppListFrag extends SherlockFragment implements OnItemClickListener
 			if( convertView == null)
 				convertView = mInflater.inflate(R.layout.applistitem, null, false);
 			ApplicationInfo ai = appinstall.get(position).applicationInfo;
+			String[] perms = appinstall.get(position).requestedPermissions;
+			int count = perms != null ? perms.length : 0;
 			if(ai != null){
 				((ImageView)convertView.findViewById(R.id.icon)).setImageDrawable(ai.loadIcon(mPackMan));
 				((TextView)convertView.findViewById(R.id.appName)).setText(ai.loadLabel(mPackMan));
+				((TextView)convertView.findViewById(R.id.appPermCount)).setText("(" + count + ")");
 			}
 			return convertView;
 

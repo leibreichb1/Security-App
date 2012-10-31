@@ -15,15 +15,31 @@
             android:layout_centerVertical="true"
             android:padding="5dp" /> 
             
+        <TextView android:id="@+id/appPermCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:textSize="50dp"
+            android:textStyle="bold"/>
+        
         <TextView
             android:id="@+id/appName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/icon"
+            android:layout_toLeftOf="@id/appPermCount"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
             android:paddingLeft="5dp"
             android:paddingTop="5dp"
             android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textStyle="bold" 
+            android:singleLine="true"/>
+        
+
+        
             
         </RelativeLayout>
     

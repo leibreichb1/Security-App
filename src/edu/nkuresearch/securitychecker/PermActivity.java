@@ -60,24 +60,23 @@ public class PermActivity extends SherlockFragmentActivity {
 	
 	public void startRightFrag(String title){
 		String[] splitStr = title.split("\\.");
-		if(splitStr.length > 0 && perms.containsKey(splitStr[splitStr.length - 1])){
+		if(splitStr.length > 0 && perms.containsKey(splitStr[splitStr.length - 1]))
 			desc = perms.get(splitStr[splitStr.length - 1]);
-			if(getResources().getBoolean(R.bool.IsTablet)){
-				FragmentManager fm = getSupportFragmentManager();
-				Fragment rightFrag = new PermissionDescriptionFrag();
-				FragmentTransaction ft = fm.beginTransaction();
-				ft.replace(R.id.right_frag, rightFrag).commit();
-			}
-			else{
-				Builder builder = new AlertDialog.Builder(this);
-				builder.setTitle(splitStr[splitStr.length -1]);
-				builder.setMessage(desc);
-				builder.setPositiveButton("OK", null);
-				builder.create().show();
-			}
-		}
 		else
-			Toast.makeText(this, "No Descrition Available", Toast.LENGTH_LONG).show();
+			desc = "No description available, custom permission.";
+		if(getResources().getBoolean(R.bool.IsTablet)){
+			FragmentManager fm = getSupportFragmentManager();
+			Fragment rightFrag = new PermissionDescriptionFrag();
+			FragmentTransaction ft = fm.beginTransaction();
+			ft.replace(R.id.right_frag, rightFrag).commit();
+		}
+		else{
+			Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle(splitStr[splitStr.length -1]);
+			builder.setMessage(desc);
+			builder.setPositiveButton("OK", null);
+			builder.create().show();
+		}
 	}
 	
 	public String getDesc(){
