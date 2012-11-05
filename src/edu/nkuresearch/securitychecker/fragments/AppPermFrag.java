@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -31,6 +32,7 @@ public class AppPermFrag extends SherlockFragment implements OnItemClickListener
 		View v = inflater.inflate(R.layout.app_list, container, false);
 		mListView = (ListView) v.findViewById(R.id.applist);
 		mListView.setOnItemClickListener(this);
+		((LinearLayout) v.findViewById(R.id.buttons)).setVisibility(View.GONE);
 		if(mPerms != null)
 			mListView.setAdapter(new ArrayAdapter<String>(getSherlockActivity(), android.R.layout.simple_list_item_1, mPerms));
 		return v;
