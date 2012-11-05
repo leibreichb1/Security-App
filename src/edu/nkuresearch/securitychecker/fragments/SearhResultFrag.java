@@ -1,8 +1,10 @@
 package edu.nkuresearch.securitychecker.fragments;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeSet;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -144,7 +146,9 @@ public class SearhResultFrag extends SherlockFragment implements OnItemClickList
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		ArrayList<PackageInfo> list = appMap.get(mPerms.get(position));
-		((SearchResultActivity) getSherlockActivity()).setApps(list);
+		TreeSet<PackageInfo> tree = new TreeSet<PackageInfo>(new Utils.PackInCompWord(getSherlockActivity().getPackageManager()));
+		tree.addAll(list);
+		((SearchResultActivity) getSherlockActivity()).setApps(tree);
 		((SearchResultActivity) getSherlockActivity()).startRightFrag();
 	}
 }

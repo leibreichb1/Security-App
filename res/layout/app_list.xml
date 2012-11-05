@@ -1,12 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-    <ListView android:id="@+id/applist"
+    <LinearLayout 
+        android:id="@+id/buttons"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical" >
+        <TextView 
+            android:id="@+id/sortby"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:text="@string/how_to_sort_the_results_" />
+	    <LinearLayout 
+	        android:id="@+id/types"
+	        android:layout_height="wrap_content"
+	        android:layout_width="match_parent"
+	        android:orientation="horizontal" >
+	        <Button 
+	        android:id="@+id/wordBtn"
+	        android:layout_height="wrap_content"
+	        android:layout_width="0dip"
+	        android:layout_weight="1"
+	        android:text="@string/by_name" />
+	        <Button 
+	        android:id="@+id/numAsc"
+	        android:layout_height="wrap_content"
+	        android:layout_width="0dip"
+	        android:layout_weight="1"
+	        android:text="@string/asc" />
+	        <Button 
+	        android:id="@+id/numDsc"
+	        android:layout_height="wrap_content"
+	        android:layout_width="0dip"
+	        android:layout_weight="1"
+	        android:text="@string/dsc" />
+    	</LinearLayout>
+    </LinearLayout>
+    <ListView 
+       android:id="@+id/applist"
        android:layout_width="fill_parent"
-       android:layout_height="wrap_content"/>
+       android:layout_height="wrap_content"
+       android:layout_below="@id/buttons" />
     
+    <TextView
+       android:id="@+id/emptyText"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_centerInParent="true"
+       android:textSize="20dip"
+       android:text="@string/no_apps"
+       android:visibility="gone" />
 
-</LinearLayout>
+</RelativeLayout>

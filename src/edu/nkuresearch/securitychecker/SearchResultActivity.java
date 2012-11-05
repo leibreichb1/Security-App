@@ -1,6 +1,7 @@
 package edu.nkuresearch.securitychecker;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -16,7 +17,7 @@ import edu.nkuresearch.securitychecker.fragments.SearhResultFrag;
 
 public class SearchResultActivity extends SherlockFragmentActivity{
 	
-	private ArrayList<PackageInfo> mApps;
+	private TreeSet<PackageInfo> mApps;
 	
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -34,11 +35,11 @@ public class SearchResultActivity extends SherlockFragmentActivity{
 		return ((ArrayList<String>) getIntent().getSerializableExtra("LIST"));
 	}
 	
-	public void setApps(ArrayList<PackageInfo> apps){
+	public void setApps(TreeSet<PackageInfo> apps){
 		mApps = apps;
 	}
 	
-	public ArrayList<PackageInfo> getApps(){
+	public TreeSet<PackageInfo> getApps(){
 		return mApps;
 	}
 	
@@ -51,7 +52,8 @@ public class SearchResultActivity extends SherlockFragmentActivity{
 		}
 		else{
 			Intent intent = new Intent(this, AppListActivity.class);
-			intent.putParcelableArrayListExtra("APPS", mApps);
+			//intent.putParcelableArrayListExtra("APPS", mApps);
+			intent.putExtra("APPS", mApps);
 			startActivity(intent);
 		}
 	}

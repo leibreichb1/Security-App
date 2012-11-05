@@ -1,10 +1,16 @@
 package edu.nkuresearch.securitychecker;
 
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
+
 import android.os.Bundle;
+import android.util.Log;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.view.Window;
+import com.stericson.RootTools.Command;
+import com.stericson.RootTools.RootTools;
 
 import edu.nkuresearch.securitychecker.fragments.AppListFrag;
 import edu.nkuresearch.securitychecker.fragments.InstallObserverFrag;
@@ -17,6 +23,29 @@ public class HomeActivity extends BaseActivity{
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+				
+		if(RootTools.isAccessGiven()){
+			Command com = new Command(0, "ls /") {
+				
+				@Override
+				public void output(int id, String line) {
+					Log.d("LS", line);
+				}
+			};
+			try {
+				RootTools.getShell(true).add(com).waitForFinish();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (TimeoutException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setTitle("Chooser");

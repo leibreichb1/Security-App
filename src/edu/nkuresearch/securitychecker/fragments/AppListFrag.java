@@ -1,7 +1,7 @@
 package edu.nkuresearch.securitychecker.fragments;
 
-import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeSet;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,10 +13,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,13 +31,17 @@ import edu.nkuresearch.securitychecker.HomeActivity;
 import edu.nkuresearch.securitychecker.PermActivity;
 import edu.nkuresearch.securitychecker.R;
 import edu.nkuresearch.securitychecker.SearchResultActivity;
+import edu.nkuresearch.securitychecker.fragments.Utils.PackInCompWord;
 
 public class AppListFrag extends SherlockFragment implements OnItemClickListener{
 	
-	private List<PackageInfo> appinstall;
+	private TreeSet<PackageInfo> appinstall;
 	private LayoutInflater mInflater;
 	private ListView mListView;
-	PackageManager mPackMan;
+	private Button mByWord;
+	private Button mByAsc;
+	private Button mByDsc;
+	private PackageManager mPackMan;
 	public static final String PACK_INFO = "PACK_INFO";
 
 	@Override
@@ -46,16 +53,25 @@ public class AppListFrag extends SherlockFragment implements OnItemClickListener
 		mPackMan = getSherlockActivity().getPackageManager();
 		Activity activ = getSherlockActivity();
 		if(!(activ instanceof SearchResultActivity) && !(activ instanceof AppListActivity)){
-			appinstall = new LinkedList<PackageInfo>();
+			mByWord = (Button) v.findViewById(R.id.wordBtn);
+			mByAsc = (Button) v.findViewById(R.id.numAsc);
+			mByDsc = (Button) v.findViewById(R.id.numDsc);
+			appinstall = new TreeSet<PackageInfo>(new PackInCompWord(mPackMan));
 			((HomeActivity) getSherlockActivity()).startProgress();
 			new ListApps().execute((Void) null);
 		}
 		else{
+			LinearLayout ll = (LinearLayout) v.findViewById(R.id.buttons);
+			ll.setVisibility(View.GONE);
 			if(activ instanceof SearchResultActivity)
 				appinstall = ((SearchResultActivity) activ).getApps();
 			else
-				appinstall = activ.getIntent().getParcelableArrayListExtra("APPS");
+				appinstall = (TreeSet<PackageInfo>) activ.getIntent().getSerializableExtra("APPS");
 			mListView.setAdapter(new AppListAdapter());
+			if(appinstall == null || appinstall.size() == 0){
+				mListView.setVisibility(View.GONE);
+				((TextView)v.findViewById(R.id.emptyText)).setVisibility(View.VISIBLE);
+			}
 		}
 		return v;
 	}
@@ -67,7 +83,8 @@ public class AppListFrag extends SherlockFragment implements OnItemClickListener
 	        List<PackageInfo> tempList = mPackMan.getInstalledPackages(PackageManager.GET_PERMISSIONS | PackageManager.GET_PROVIDERS);
 	        for( PackageInfo a : tempList) {
 	            if( getSherlockActivity() != null && ((String) a.applicationInfo.loadLabel( getSherlockActivity().getPackageManager())).matches( "^[^\\.]+$" ) ) {
-	                appinstall.add(a);
+	            	if(!appinstall.contains(a))
+	            		appinstall.add(a);
 	            }
 	        }
 			return null;
@@ -76,6 +93,40 @@ public class AppListFrag extends SherlockFragment implements OnItemClickListener
 		@Override
 		protected void onPostExecute(Void result) {
 			mListView.setAdapter(new AppListAdapter());
+			if(!(getSherlockActivity() instanceof SearchResultActivity) && !(getSherlockActivity() instanceof AppListActivity)){
+				mByWord.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						TreeSet<PackageInfo> tempTree = new TreeSet<PackageInfo>(new Utils.PackInCompWord(getSherlockActivity().getPackageManager()));
+						tempTree.addAll(appinstall);
+						appinstall = tempTree;
+						mListView.setAdapter(new AppListAdapter());
+					}
+				});
+				mByAsc.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						TreeSet<PackageInfo> tempTree;
+						tempTree = new TreeSet<PackageInfo>(new Utils.PackInCompNumAsc(getSherlockActivity().getPackageManager()));
+						tempTree.addAll(appinstall);
+						appinstall = tempTree;
+						mListView.setAdapter(new AppListAdapter());
+					}
+				});
+				mByDsc.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						TreeSet<PackageInfo> tempTree;
+						tempTree = new TreeSet<PackageInfo>(new Utils.PackInCompNumDes(getSherlockActivity().getPackageManager()));
+						tempTree.addAll(appinstall);
+						appinstall = tempTree;
+						mListView.setAdapter(new AppListAdapter());
+					}
+				});
+			}
 			mListView.setOnItemClickListener(AppListFrag.this);
 			if(getSherlockActivity() != null)
 				((HomeActivity) getSherlockActivity()).stopProgress();
@@ -84,9 +135,15 @@ public class AppListFrag extends SherlockFragment implements OnItemClickListener
 	}
 
 	private class AppListAdapter implements ListAdapter{
+		PackageInfo[] apps;
+		
+		public AppListAdapter(){
+			apps = appinstall.toArray(new PackageInfo[appinstall.size()]);
+		}
+		
 		@Override
 		public int getCount() {
-			return (appinstall == null) ? 0 : appinstall.size();
+			return (apps == null) ? 0 : apps.length;
 		}
 
 		@Override
@@ -109,8 +166,8 @@ public class AppListFrag extends SherlockFragment implements OnItemClickListener
 			
 			if( convertView == null)
 				convertView = mInflater.inflate(R.layout.applistitem, null, false);
-			ApplicationInfo ai = appinstall.get(position).applicationInfo;
-			String[] perms = appinstall.get(position).requestedPermissions;
+			ApplicationInfo ai = apps[position].applicationInfo;
+			String[] perms = apps[position].requestedPermissions;
 			int count = perms != null ? perms.length : 0;
 			if(ai != null){
 				((ImageView)convertView.findViewById(R.id.icon)).setImageDrawable(ai.loadIcon(mPackMan));
@@ -160,9 +217,9 @@ public class AppListFrag extends SherlockFragment implements OnItemClickListener
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 		Intent intent = new Intent(getSherlockActivity(), PermActivity.class);
-		intent.putExtra(PACK_INFO, appinstall.get(position));
+		PackageInfo[] apps = appinstall.toArray(new PackageInfo[appinstall.size()]);
+		intent.putExtra(PACK_INFO, apps[position]);
 		startActivity(intent);
 	}
-	
 }
 

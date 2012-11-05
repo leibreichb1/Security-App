@@ -30,6 +30,7 @@ import edu.nkuresearch.securitychecker.SearchResultActivity;
 public class PermSearchFrag extends SherlockFragment{
 
 	private LayoutInflater mInflater;
+	ListPerms perms;
 	private ListView lv;
 	private LinkedList<String> list;
 	private LinkedList<String> selectedList;
@@ -52,8 +53,16 @@ public class PermSearchFrag extends SherlockFragment{
 		lv = (ListView) v.findViewById(R.id.permlist);
 		list = new LinkedList<String>();
 		selectedList = new LinkedList<String>();
-		new ListPerms().execute((Void) null);
+		perms = new ListPerms();
+		perms.execute((Void) null);
 		return v;
+	}
+	
+	@Override
+	public void onStop() {
+		if(perms != null)
+			perms.cancel(true);
+		super.onStop();
 	}
 	
 	class ListPerms extends AsyncTask<Void, Void, Void>{

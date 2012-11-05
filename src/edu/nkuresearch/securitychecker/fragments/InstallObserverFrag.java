@@ -12,17 +12,21 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
+import com.stericson.RootTools.RootTools;
 
 import edu.nkuresearch.securitychecker.R;
 
@@ -40,58 +44,74 @@ public class InstallObserverFrag extends SherlockFragment{
 			Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.install_observe_frag, container, false);
 		mActivity = getSherlockActivity();
-        //copy over strace executables to files dir for running
-        AssetManager am = mActivity.getAssets();
-        try {
-        	File straceFile = new File(mActivity.getFilesDir() + "/strace");
-        	if(!straceFile.exists()){
-        		InputStream is = am.open("strace");
-				OutputStream out = mActivity.openFileOutput("strace", mActivity.MODE_WORLD_READABLE);
-				byte[] buffer = new byte[1024];
-				int count = 0;
-				while((count = is.read(buffer)) > 0){
-					out.write(buffer, 0, count);
+		
+		if(RootTools.isAccessGiven()){
+	        //copy over strace executables to files dir for running
+	        AssetManager am = mActivity.getAssets();
+	        try {
+	        	File straceFile = new File(mActivity.getFilesDir() + "/strace");
+	        	if(!straceFile.exists()){
+	        		InputStream is = am.open("strace");
+					OutputStream out = mActivity.openFileOutput("strace", mActivity.MODE_WORLD_READABLE);
+					byte[] buffer = new byte[1024];
+					int count = 0;
+					while((count = is.read(buffer)) > 0){
+						out.write(buffer, 0, count);
+					}
+					straceFile.setExecutable(true);
+					is.close();
+					out.close();
+	        	}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        
+	        //create the files
+	        file = new File( mActivity.getFilesDir(), "strace.sh" );
+	        readFile = new File( mActivity.getFilesDir(), "strace.txt" );
+	        
+	        Button startBtn = (Button)rootView.findViewById(R.id.button1);
+	        startBtn.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					onStartBtn();	
 				}
-				straceFile.setExecutable(true);
-				is.close();
-				out.close();
-        	}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			});
+	        
+	        Button stopBtn = (Button)rootView.findViewById(R.id.button2);
+	        stopBtn.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					onCancelStrace();
+				}
+			});
+	        
+	        Button managerBtn = (Button)rootView.findViewById(R.id.button3);
+	        managerBtn.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					loadManager();	
+				}
+			});
 		}
-        
-        //create the files
-        file = new File( mActivity.getFilesDir(), "strace.sh" );
-        readFile = new File( mActivity.getFilesDir(), "strace.txt" );
-        
-        Button startBtn = (Button)rootView.findViewById(R.id.button1);
-        startBtn.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				onStartBtn();	
-			}
-		});
-        
-        Button stopBtn = (Button)rootView.findViewById(R.id.button2);
-        stopBtn.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				onCancelStrace();
-			}
-		});
-        
-        Button managerBtn = (Button)rootView.findViewById(R.id.button3);
-        managerBtn.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				loadManager();	
-			}
-		});
-        
+		else{
+			AlertDialog.Builder builder = new AlertDialog.Builder(getSherlockActivity());
+			builder.setTitle("Root Required");
+			builder.setMessage("Root permission required");
+			builder.setPositiveButton("OK", new OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					ActionBar bar = getSherlockActivity().getSupportActionBar(); 
+					bar.selectTab(bar.getTabAt(0));
+				}
+			});
+			builder.create().show();
+		}
 		return rootView;
 	}
     

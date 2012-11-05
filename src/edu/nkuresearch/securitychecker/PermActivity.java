@@ -63,7 +63,7 @@ public class PermActivity extends SherlockFragmentActivity {
 		if(splitStr.length > 0 && perms.containsKey(splitStr[splitStr.length - 1]))
 			desc = perms.get(splitStr[splitStr.length - 1]);
 		else
-			desc = "No description available, custom permission.";
+			desc = "Custom permission for this app.  No description available.";
 		if(getResources().getBoolean(R.bool.IsTablet)){
 			FragmentManager fm = getSupportFragmentManager();
 			Fragment rightFrag = new PermissionDescriptionFrag();

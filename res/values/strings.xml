@@ -6,4 +6,10 @@
 	<string name="rating_title">How secure the app is:</string>
 	<string name="hello">Hello World, StraceTestActivity!</string>
 	<string name="scan_apps">Scan Apps</string>
+	<string name="no_apps">No apps have this permission</string>
+	<string name="by_count">By Count</string>
+	<string name="by_name">By Name</string>
+	<string name="how_to_sort_the_results_">How to sort the results?</string>
+	<string name="asc">Ascending</string>
+	<string name="dsc">Descending</string>
 </resources>
