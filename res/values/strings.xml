@@ -2,7 +2,7 @@
     <string name="app_name">Security Checker</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_base">BaseActivity</string>
+    <string name="title_activity_base">Security Checker</string>
 	<string name="rating_title">How secure the app is:</string>
 	<string name="hello">Hello World, StraceTestActivity!</string>
 	<string name="scan_apps">Scan Apps</string>
