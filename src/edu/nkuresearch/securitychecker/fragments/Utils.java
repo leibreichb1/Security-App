@@ -46,6 +46,11 @@ public class Utils{
 					String rhsName = (String) rhs.applicationInfo.loadLabel(mPackMan);
 					return lhsName.compareToIgnoreCase(rhsName);
 				}			
+			else if(permsL == null && permsR == null){
+				String lhsName = (String) lhs.applicationInfo.loadLabel(mPackMan);
+				String rhsName = (String) rhs.applicationInfo.loadLabel(mPackMan);
+				return lhsName.compareToIgnoreCase(rhsName);
+			}
 			else if(permsL == null)
 				return -1;
 			else
@@ -73,6 +78,11 @@ public class Utils{
 					String rhsName = (String) rhs.applicationInfo.loadLabel(mPackMan);
 					return lhsName.compareToIgnoreCase(rhsName);
 				}
+			}
+			else if(permsL == null && permsR == null){
+				String lhsName = (String) lhs.applicationInfo.loadLabel(mPackMan);
+				String rhsName = (String) rhs.applicationInfo.loadLabel(mPackMan);
+				return lhsName.compareToIgnoreCase(rhsName);
 			}
 			else if(permsL == null)
 				return 1;
