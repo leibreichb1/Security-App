@@ -5,24 +5,21 @@ import java.util.TreeSet;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.database.DataSetObserver;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -31,9 +28,10 @@ import edu.nkuresearch.securitychecker.HomeActivity;
 import edu.nkuresearch.securitychecker.PermActivity;
 import edu.nkuresearch.securitychecker.R;
 import edu.nkuresearch.securitychecker.SearchResultActivity;
+import edu.nkuresearch.securitychecker.fragments.AppListFrag.ListApps;
 import edu.nkuresearch.securitychecker.fragments.Utils.PackInCompWord;
 
-public class AppListFrag extends SherlockFragment implements OnItemClickListener{
+public class RunObserver extends SherlockFragment implements OnItemClickListener{
 	
 	private TreeSet<PackageInfo> appinstall;
 	private LayoutInflater mInflater;
@@ -42,11 +40,9 @@ public class AppListFrag extends SherlockFragment implements OnItemClickListener
 	private Button mByAsc;
 	private Button mByDsc;
 	private PackageManager mPackMan;
-	public static final String PACK_INFO = "PACK_INFO";
-
+	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mInflater = inflater;
 		View v = inflater.inflate(R.layout.app_list, container, false);
 		mListView = (ListView) v.findViewById(R.id.applist);
@@ -75,7 +71,7 @@ public class AppListFrag extends SherlockFragment implements OnItemClickListener
 		}
 		return v;
 	}
-	
+
 	class ListApps extends AsyncTask<Void, Void, Void>{
 
 		@Override
@@ -127,19 +123,15 @@ public class AppListFrag extends SherlockFragment implements OnItemClickListener
 					}
 				});
 			}
-			mListView.setOnItemClickListener(AppListFrag.this);
+			mListView.setOnItemClickListener(RunObserver.this);
 			if(getSherlockActivity() != null)
 				((HomeActivity) getSherlockActivity()).stopProgress();
 			super.onPostExecute(result);
 		}
 	}
-
+	
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-		Intent intent = new Intent(getSherlockActivity(), PermActivity.class);
-		PackageInfo[] apps = appinstall.toArray(new PackageInfo[appinstall.size()]);
-		intent.putExtra(PACK_INFO, apps[position]);
-		startActivity(intent);
+		Toast.makeText(getSherlockActivity(), "TEST", Toast.LENGTH_LONG).show();
 	}
 }
-

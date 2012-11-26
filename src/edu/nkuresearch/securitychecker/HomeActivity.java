@@ -16,6 +16,7 @@ import edu.nkuresearch.securitychecker.fragments.AppListFrag;
 import edu.nkuresearch.securitychecker.fragments.InstallObserverFrag;
 import edu.nkuresearch.securitychecker.fragments.InstallReviewFrag;
 import edu.nkuresearch.securitychecker.fragments.PermSearchFrag;
+import edu.nkuresearch.securitychecker.fragments.RunObserver;
 
 public class HomeActivity extends BaseActivity{
 
@@ -59,6 +60,9 @@ public class HomeActivity extends BaseActivity{
 		
 		Tab straceTab = actionBar.newTab().setText("Result").setTabListener(new HomeTabListener<InstallReviewFrag>(this, "Result", InstallReviewFrag.class));
 		actionBar.addTab(straceTab);
+		
+		tab = actionBar.newTab().setText("App Run").setTabListener(new HomeTabListener<RunObserver>(this, "App Run", RunObserver.class));
+		actionBar.addTab(tab);
 		
 		if(getIntent().getStringExtra("STRACE") != null)
 			actionBar.selectTab(straceTab);
