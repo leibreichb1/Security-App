@@ -1,5 +1,7 @@
 package edu.nkuresearch.securitychecker;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
@@ -26,25 +28,6 @@ public class HomeActivity extends BaseActivity{
 		super.onCreate(savedInstanceState);
 				
 		if(RootTools.isAccessGiven()){
-			Command com = new Command(0, "ls /") {
-				
-				@Override
-				public void output(int id, String line) {
-					Log.d("LS", line);
-				}
-			};
-			try {
-				RootTools.getShell(true).add(com).waitForFinish();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (TimeoutException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 		
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -89,5 +72,104 @@ public class HomeActivity extends BaseActivity{
 			}
 
 		});
+	}
+	
+	@Override
+	protected void onResume() {
+		if(RunObserver.APP_RUN_STRACE){
+			RunObserver.APP_RUN_STRACE = false;
+			killStrace();
+		}
+		super.onResume();
+	}
+	
+	private boolean killStrace(){
+		
+		Command com = new Command(0, 0, null) {
+			
+			@Override
+			public void output(int id, String line) {
+				
+			}
+		};
+		
+		//creating variables
+		boolean running = false;
+		String pid = "";
+		String line;
+		Process kill;
+		try {
+			
+			//get executing processes with the name strace
+			kill = Runtime.getRuntime().exec( "ps strace" );
+			
+			//read the stream for the strace process
+			DataInputStream dIn = new DataInputStream( kill.getInputStream() );
+			try {
+				
+				//wait for kill process to end
+				kill.waitFor();
+				
+				//make sure process wasn't terminated
+				if( kill.exitValue() != 255 ){
+					try {
+						
+						//read all lines from stream
+						while( (line = dIn.readLine()) != null ){
+							
+							//check if strace exists
+							if( line.matches( ".*strace" )){
+								
+								//get processID
+								String[] getPid = line.split( "\\s+" );
+								pid = "" + getPid[1];
+								
+								//make sure we can get a process number
+								if( isPID( pid ) ){
+									
+									//kill the strace process
+									Process pr = Runtime.getRuntime().exec( "su" );
+									DataOutputStream dOut = new DataOutputStream( pr.getOutputStream() );
+					    			dOut.writeBytes( "kill " + pid );
+					    			dOut.flush();
+					    			dOut.close();
+					    			
+					    			//set found flag to true
+					    			running = true;
+								}
+							}
+						}
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			} 
+			catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		//return if found or not
+		return running;
+	}
+
+	//check that input is a number
+	private boolean isPID(String pid) {
+	  	try {
+	  		//validate number
+	  		Integer.parseInt(pid);
+	  		return true;
+	  	}
+	  	
+	  	//not a number
+	  	catch (NumberFormatException e) {
+	  		// s is not numeric
+	  		return false;
+	  	}
 	}
 }

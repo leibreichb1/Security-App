@@ -6,6 +6,7 @@ import java.util.TreeSet;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -52,8 +53,11 @@ public class SearchResultActivity extends SherlockFragmentActivity{
 		}
 		else{
 			Intent intent = new Intent(this, AppListActivity.class);
+			ArrayList<PackageInfo> apps = new ArrayList<PackageInfo>(mApps.size());
+			apps.addAll(mApps);
 			//intent.putParcelableArrayListExtra("APPS", mApps);
-			intent.putExtra("APPS", mApps);
+			intent.putParcelableArrayListExtra("APPS", apps);
+			//intent.putExtra("APPS", apps);
 			startActivity(intent);
 		}
 	}

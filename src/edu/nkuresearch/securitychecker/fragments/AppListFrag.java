@@ -1,5 +1,6 @@
 package edu.nkuresearch.securitychecker.fragments;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -65,9 +66,13 @@ public class AppListFrag extends SherlockFragment implements OnItemClickListener
 			ll.setVisibility(View.GONE);
 			if(activ instanceof SearchResultActivity)
 				appinstall = ((SearchResultActivity) activ).getApps();
-			else
-				appinstall = (TreeSet<PackageInfo>) activ.getIntent().getSerializableExtra("APPS");
-			mListView.setAdapter(new AppListAdapter(appinstall, mInflater, mPackMan));
+			else{
+				ArrayList<PackageInfo> apps = activ.getIntent().getParcelableArrayListExtra("APPS");
+				appinstall = new TreeSet<PackageInfo>(new PackInCompWord(mPackMan));
+				appinstall.addAll(apps);
+				//appinstall = (TreeSet<PackageInfo>) activ.getIntent().getSerializableExtra("APPS");
+			}
+			mListView.setAdapter(new Utils.AppListAdapter(appinstall, mInflater, mPackMan));
 			if(appinstall == null || appinstall.size() == 0){
 				mListView.setVisibility(View.GONE);
 				((TextView)v.findViewById(R.id.emptyText)).setVisibility(View.VISIBLE);
@@ -92,7 +97,7 @@ public class AppListFrag extends SherlockFragment implements OnItemClickListener
 		
 		@Override
 		protected void onPostExecute(Void result) {
-			mListView.setAdapter(new AppListAdapter(appinstall, mInflater, mPackMan));
+			mListView.setAdapter(new Utils.AppListAdapter(appinstall, mInflater, mPackMan));
 			if(!(getSherlockActivity() instanceof SearchResultActivity) && !(getSherlockActivity() instanceof AppListActivity)){
 				mByWord.setOnClickListener(new OnClickListener() {
 					
@@ -101,7 +106,7 @@ public class AppListFrag extends SherlockFragment implements OnItemClickListener
 						TreeSet<PackageInfo> tempTree = new TreeSet<PackageInfo>(new Utils.PackInCompWord(getSherlockActivity().getPackageManager()));
 						tempTree.addAll(appinstall);
 						appinstall = tempTree;
-						mListView.setAdapter(new AppListAdapter(appinstall, mInflater, mPackMan));
+						mListView.setAdapter(new Utils.AppListAdapter(appinstall, mInflater, mPackMan));
 					}
 				});
 				mByAsc.setOnClickListener(new OnClickListener() {
@@ -112,7 +117,7 @@ public class AppListFrag extends SherlockFragment implements OnItemClickListener
 						tempTree = new TreeSet<PackageInfo>(new Utils.PackInCompNumAsc(getSherlockActivity().getPackageManager()));
 						tempTree.addAll(appinstall);
 						appinstall = tempTree;
-						mListView.setAdapter(new AppListAdapter(appinstall, mInflater, mPackMan));
+						mListView.setAdapter(new Utils.AppListAdapter(appinstall, mInflater, mPackMan));
 					}
 				});
 				mByDsc.setOnClickListener(new OnClickListener() {
@@ -123,7 +128,7 @@ public class AppListFrag extends SherlockFragment implements OnItemClickListener
 						tempTree = new TreeSet<PackageInfo>(new Utils.PackInCompNumDes(getSherlockActivity().getPackageManager()));
 						tempTree.addAll(appinstall);
 						appinstall = tempTree;
-						mListView.setAdapter(new AppListAdapter(appinstall, mInflater, mPackMan));
+						mListView.setAdapter(new Utils.AppListAdapter(appinstall, mInflater, mPackMan));
 					}
 				});
 			}

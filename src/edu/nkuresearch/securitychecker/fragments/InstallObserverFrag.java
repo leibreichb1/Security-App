@@ -172,7 +172,7 @@ public class InstallObserverFrag extends SherlockFragment{
 		}
     	
     	//validate that the pid is numeric
-    	if( isPID( pid ) ){
+    	if( Utils.isPID( pid ) ){
             try {
             	
             	//open a writer to write the strace.sh file
@@ -206,7 +206,7 @@ public class InstallObserverFrag extends SherlockFragment{
     //method for when canceling strace
     public void onCancelStrace(){
 		
-    	//get create the variables
+    	//create the variables
     	String pid = "";
 		String line;
 		Process kill;
@@ -236,7 +236,7 @@ public class InstallObserverFrag extends SherlockFragment{
 								pid = "" + getPid[1];
 								
 								//check the the PID is valid and kill it
-								if( isPID( pid ) ){
+								if( Utils.isPID( pid ) ){
 									
 									//kill strace
 									Process pr = Runtime.getRuntime().exec( "su" );
@@ -274,17 +274,4 @@ public class InstallObserverFrag extends SherlockFragment{
     	Intent startManager = new Intent( android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS );
     	startActivity( startManager );
     }
-   
-    
-   //check if the PID is numeric
-   private boolean isPID(String pid) {
-	   	try {
-	   		Integer.parseInt(pid);
-	   		return true;
-	   	}
-	   	catch (NumberFormatException e) {
-	   		// s is not numeric
-	   		return false;
-	   	}
-	}
 }
